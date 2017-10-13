@@ -15,12 +15,20 @@
         <meta-data
             android:name="com.iwillow.scala.app.util.MyGlideModule"
             android:value="GlideModule" />
-        <activity android:name=".ui.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+         <activity android:name=".ui.MainActivity">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
+
+        <activity
+            android:name=".ui.MovieInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MovieInfoPage">
+
         </activity>
     </application>
 

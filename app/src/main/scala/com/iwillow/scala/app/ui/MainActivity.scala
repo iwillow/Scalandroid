@@ -6,6 +6,9 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.{LinearLayoutManager, RecyclerView}
+import android.view.View
+import android.widget.AdapterView.OnItemClickListener
+import com.chad.library.adapter.base.{BaseQuickAdapter, BaseViewHolder}
 import com.iwillow.scala.app.Api.DoubanParser
 import com.iwillow.scala.app.adapter.MovieAdapter
 import com.iwillow.scala.app.entity.Data.Subject
@@ -25,11 +28,12 @@ class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState)
     mProgressDialog = new ProgressDialog(this)
     mProgressDialog.setMessage("loading...")
-    setContentView(R.layout.activity_main)
+    setContentView(R.layout.activity_movie_list)
     mRvMovie = findViewById(R.id.rv_movie).asInstanceOf[RecyclerView]
     mRvMovie.setLayoutManager(new LinearLayoutManager(this))
     mAdapter = new MovieAdapter(R.layout.item_movie, new util.ArrayList[Subject]())
     mRvMovie.setAdapter(mAdapter)
+
     mProgressDialog.show()
 
     RxHttp.get(Api.URL_TOP250)

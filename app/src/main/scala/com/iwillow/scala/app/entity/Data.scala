@@ -10,17 +10,19 @@ object Data {
   /**
     * 评分
     */
-  case class Rating(max: Int, average: Float, stars: String, min: Int)
+  case class Rating(max: Int, average: Float, stars: String, min: Int) extends java.io.Serializable
+
 
   /**
     * 图片
     */
-  case class Avatars(small: String, large: String, medium: String)
+  case class Avatars(small: String, large: String, medium: String) extends java.io.Serializable
+
 
   /**
     * 人
     */
-  case class Person(alt: String, avatars: Avatars, name: String, id: String)
+  case class Person(alt: String, avatars: Avatars, name: String, id: String) extends java.io.Serializable
 
   /**
     * 电影主题
@@ -38,12 +40,12 @@ object Data {
                       images: Avatars,
                       alt: String,
                       id: String
-                    )
+                    ) extends java.io.Serializable
 
   /**
     * Top250
     **/
-  case class Top250(count: Int, start: Int, total: Int, subjects: List[Subject], title: String)
+  case class Top250(count: Int, start: Int, total: Int, subjects: List[Subject], title: String) extends java.io.Serializable
 
 
   object ResultJsonProtocol extends DefaultJsonProtocol {
