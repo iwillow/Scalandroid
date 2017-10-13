@@ -57,4 +57,45 @@ object Data {
 
   }
 
+
+  case class MovieInfo(
+                        reviews_count: Int,
+                        wish_count: Int,
+                        douban_site: String,
+                        mobile_url: String,
+                        do_count: Int,
+                        share_url: String,
+                        seasons_count: Int,
+                        schedule_url: String,
+                        episodes_count: Int,
+                        countries: List[String],
+                        collect_count: Int,
+                        casts: List[Person],
+                        current_season: Int,
+                        original_title: String,
+                        summary: String,
+                        subtype: String,
+                        comments_count: Int,
+                        ratings_count: Int,
+                        aka: List[String]) extends java.io.Serializable
+
+
+  object MovieInfoProtocol extends DefaultJsonProtocol {
+
+    implicit val avatarsFormat = jsonFormat(Avatars, "small", "large", "medium")
+    implicit val personFormat = jsonFormat(Person, "alt", "avatars", "name", "id")
+    implicit val movieInfoFormat = jsonFormat(MovieInfo,
+      "reviews_count", "wish_count",
+      "douban_site", "mobile_url",
+      "do_count", "share_url",
+      "seasons_count", "schedule_url",
+      "episodes_count", "countries",
+      "collect_count", "casts",
+      "current_season", "original_title",
+      "summary", "subtype",
+      "comments_count", "ratings_count",
+      "aka")
+  }
+
+
 }
