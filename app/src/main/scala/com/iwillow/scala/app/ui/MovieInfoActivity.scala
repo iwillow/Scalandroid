@@ -12,9 +12,12 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.{ImageView, TextView}
 import com.bumptech.glide.Glide
-import com.iwillow.scala.app.R
+import com.iwillow.scala.app.Api.DoubanParser
+import com.iwillow.scala.app.{Api, R}
 import com.iwillow.scala.app.entity.Data.Subject
+import com.iwillow.scala.app.util.{LogExt, RxHttp}
 import jp.wasabeef.glide.transformations.BlurTransformation
+import rx.lang.scala.subscriptions.CompositeSubscription
 
 
 /**
@@ -32,9 +35,12 @@ object MovieInfoActivity {
 
 
 class MovieInfoActivity extends AppCompatActivity {
-
+  val TAG = getClass.getSimpleName
 
   private var item: Subject = _
+
+  private val subscriptions = CompositeSubscription()
+
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -78,12 +84,15 @@ class MovieInfoActivity extends AppCompatActivity {
       .crossFade()
       .bitmapTransform(new BlurTransformation(this, 30, 3))
       .into(bgImageView)
+
     setText(R.id.toolbar_title, item.title)
     setText(R.id.tv_title, item.title)
     setText(R.id.tv_rate, item.rating.average.toString)
     setText(R.id.tv_director, item.directors.mapConserve(p => p.name).mkString("/"))
     setText(R.id.tv_casts, item.casts.mapConserve(p => p.name).mkString("/"))
     setText(R.id.tv_genres, item.genres.mkString("/"))
+    setText(R.id.tv_year, item.year)
+    loadDetailMsg(item)
   }
 
 
@@ -92,6 +101,25 @@ class MovieInfoActivity extends AppCompatActivity {
     if (textView != null) {
       textView.setText(text)
     }
+  }
+
+  def loadDetailMsg(@NonNull subject: Subject): Unit = {
+
+    val subscription = RxHttp.get(Api.URL_MOVIE_INFO + subject.id)
+      .map(DoubanParser parseMovieInfo _)
+      .filter(movie => movie != null)
+      .subscribe(
+        movie => {
+          setText(R.id.tv_aka, movie.aka.mkString("/"))
+          setText(R.id.tv_summary, movie.summary)
+        },
+        e => {
+          LogExt.e(TAG, "loadDetailMsg", e)
+        }
+
+      )
+
+    subscriptions += subscription
   }
 
 
