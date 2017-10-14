@@ -21,7 +21,7 @@ class MainActivity extends AppCompatActivity {
   var mRvMovie: RecyclerView = _
   var mAdapter: MovieAdapter = _
   var mProgressDialog: ProgressDialog = _
-  val subscriptions = new CompositeSubscription()
+  val subscriptions = CompositeSubscription()
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
