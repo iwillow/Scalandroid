@@ -1,7 +1,7 @@
 package com.iwillow.scala.app
 
 import android.support.annotation.NonNull
-import com.iwillow.scala.app.entity.Data.Top250
+import com.iwillow.scala.app.entity.Data.{MovieInfo, Top250}
 
 /**
   * Created by iwillow on 2017/10/11.
@@ -14,10 +14,17 @@ package object Api {
   object DoubanParser {
 
     def parseTop250(@NonNull json: String): Top250 = {
-      import spray.json._
       import com.iwillow.scala.app.entity.Data.ResultJsonProtocol._
+      import spray.json._
       json.parseJson.convertTo[Top250]
     }
+
+    def parseMovieInfo(@NonNull json: String): MovieInfo = {
+      import com.iwillow.scala.app.entity.Data.MovieInfoProtocol._
+      import spray.json._
+      json.parseJson.convertTo[MovieInfo]
+    }
+
   }
 
 }
