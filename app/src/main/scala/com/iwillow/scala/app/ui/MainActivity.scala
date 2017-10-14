@@ -6,14 +6,12 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.{LinearLayoutManager, RecyclerView}
-import android.view.View
-import android.widget.AdapterView.OnItemClickListener
-import com.chad.library.adapter.base.{BaseQuickAdapter, BaseViewHolder}
 import com.iwillow.scala.app.Api.DoubanParser
 import com.iwillow.scala.app.adapter.MovieAdapter
 import com.iwillow.scala.app.entity.Data.Subject
 import com.iwillow.scala.app.util.{LogExt, RxHttp}
 import com.iwillow.scala.app.{Api, R}
+import rx.lang.scala.subscriptions.CompositeSubscription
 
 /**
   * Created by iwillow on 2017/10/11.
@@ -23,6 +21,7 @@ class MainActivity extends AppCompatActivity {
   var mRvMovie: RecyclerView = _
   var mAdapter: MovieAdapter = _
   var mProgressDialog: ProgressDialog = _
+  val subscriptions = new CompositeSubscription()
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -36,7 +35,7 @@ class MainActivity extends AppCompatActivity {
 
     mProgressDialog.show()
 
-    RxHttp.get(Api.URL_TOP250)
+    val subscription = RxHttp.get(Api.URL_TOP250)
       .map(DoubanParser parseTop250 _)
       .subscribe(
         top250 => {
@@ -52,6 +51,12 @@ class MainActivity extends AppCompatActivity {
         }
       )
 
+    subscriptions += subscription
+  }
+
+  override def onDestroy(): Unit = {
+    super.onDestroy()
+    subscriptions.unsubscribe()
   }
 
 }
