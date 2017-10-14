@@ -9,7 +9,7 @@ import com.iwillow.scala.app.entity.Data.Top250
 package object Api {
   val HOST = "https://api.douban.com"
   val URL_TOP250 = HOST + "/v2/movie/top250"
-
+  val URL_MOVIE_INFO = HOST + "/v2/movie/subject/"
 
   object DoubanParser {
 
