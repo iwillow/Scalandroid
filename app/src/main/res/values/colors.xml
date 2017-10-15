@@ -2,7 +2,14 @@
 <resources>
     <color name="colorPrimary">#37be4c</color>
     <color name="colorPrimaryDark">#00b41d</color>
+    <color name="colorDoubanColor1">#298d38</color>
+    <color name="colorDoubanColor2">#1d8dc8</color>
+    <color name="colorDoubanColor3">#f6be85</color>
     <color name="divider_line">#9a9c9a</color>
     <color name="colorAccent">#f5c38f</color>
     <color name="colorContent">#ff333333</color>
+    <color name="colorItemClick">#f2f4f5</color>
+    <color name="colorItemDefault">#ffffffff</color>
+    <color name="colorItemLowBackground">#d9d9d9</color>
+    <color name="itemBackground">#DD7D7D7D</color>
 </resources>
