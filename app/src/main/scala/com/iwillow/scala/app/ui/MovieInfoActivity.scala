@@ -1,6 +1,8 @@
 package com.iwillow.scala.app.ui
 
 
+import java.util
+
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -8,13 +10,15 @@ import android.os.{Build, Bundle}
 import android.support.annotation.{IdRes, NonNull}
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.{ActionBar, AppCompatActivity}
-import android.support.v7.widget.Toolbar
+import android.support.v7.widget.{LinearLayoutManager, RecyclerView, Toolbar}
 import android.view.View
+import android.view.View.OnClickListener
 import android.widget.{ImageView, TextView}
 import com.bumptech.glide.Glide
 import com.iwillow.scala.app.Api.DoubanParser
+import com.iwillow.scala.app.adapter.StarAdapter
 import com.iwillow.scala.app.{Api, R}
-import com.iwillow.scala.app.entity.Data.Subject
+import com.iwillow.scala.app.entity.Data.{Person, Star, Subject}
 import com.iwillow.scala.app.util.{LogExt, RxHttp}
 import jp.wasabeef.glide.transformations.BlurTransformation
 import rx.lang.scala.subscriptions.CompositeSubscription
@@ -39,8 +43,11 @@ class MovieInfoActivity extends AppCompatActivity {
 
   private var item: Subject = _
 
-  private val subscriptions = CompositeSubscription()
+  private var mStarRecyclerView: RecyclerView = _
 
+  private var mStarAdapter:StarAdapter=_
+
+  private val subscriptions = CompositeSubscription()
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -61,6 +68,9 @@ class MovieInfoActivity extends AppCompatActivity {
   private[this] def initView(): Unit = {
     val toolBar: Toolbar = findViewById(R.id.toolbar).asInstanceOf[Toolbar]
     toolBar.setTitle(item.title)
+    toolBar.setNavigationOnClickListener(new OnClickListener {
+      override def onClick(v: View): Unit = finish()
+    })
     setSupportActionBar(toolBar)
     val actionBar: ActionBar = getSupportActionBar
     if (actionBar != null) {
@@ -68,6 +78,12 @@ class MovieInfoActivity extends AppCompatActivity {
       actionBar.setDisplayShowTitleEnabled(false)
       actionBar.setDisplayHomeAsUpEnabled(true)
     }
+
+    mStarRecyclerView = findViewById(R.id.rv_star).asInstanceOf[RecyclerView]
+    mStarRecyclerView.setLayoutManager(new LinearLayoutManager(this))
+    mStarAdapter = new StarAdapter(R.layout.item_star, new util.ArrayList[Star]())
+    mStarRecyclerView.setAdapter(mStarAdapter)
+    item.directors.foreach(item=>mStarAdapter.addData(Star("导演",item)) )
 
     val imageView: ImageView = findViewById(R.id.iv_cover).asInstanceOf[ImageView]
     Glide.`with`(this)
@@ -112,11 +128,11 @@ class MovieInfoActivity extends AppCompatActivity {
         movie => {
           setText(R.id.tv_aka, movie.aka.mkString("/"))
           setText(R.id.tv_summary, movie.summary)
+          movie.casts.foreach(item=>mStarAdapter.addData(Star("演员",item)) )
         },
         e => {
           LogExt.e(TAG, "loadDetailMsg", e)
         }
-
       )
 
     subscriptions += subscription
