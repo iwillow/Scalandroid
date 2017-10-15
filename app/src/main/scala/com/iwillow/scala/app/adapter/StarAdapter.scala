@@ -21,6 +21,7 @@ class StarAdapter(@LayoutRes layoutResId: Int, data: java.util.List[Star]) exten
       .load(url)
       .placeholder(R.drawable.img_default_movie)
       .error(R.drawable.img_default_movie)
+      .centerCrop()
       .crossFade()
       .into(helper.getView[ImageView](R.id.iv_avatar))
   }

@@ -9,7 +9,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.{BaseQuickAdapter, BaseViewHolder}
 import com.iwillow.scala.app.R
-import com.iwillow.scala.app.entity.Data.Subject
+import com.iwillow.scala.app.entity.Data.{Avatars, Subject}
 import com.iwillow.scala.app.ui.MovieInfoActivity
 import com.nineoldandroids.view.{ViewHelper, ViewPropertyAnimator}
 
@@ -18,17 +18,21 @@ import com.nineoldandroids.view.{ViewHelper, ViewPropertyAnimator}
   */
 class MovieAdapter(@LayoutRes layoutResId: Int, data: java.util.List[Subject]) extends BaseQuickAdapter[Subject, BaseViewHolder](layoutResId, data) {
 
+  def this(@LayoutRes layoutResId: Int) = {
+    this(layoutResId, null)
+  }
 
   override def convert(helper: BaseViewHolder, item: Subject): Unit = {
 
     helper.setText(R.id.tv_title, item.title)
       .setText(R.id.tv_rate, item.rating.average.toString)
-      .setText(R.id.tv_director, item.directors.mapConserve(p => p.name).mkString("/"))
-      .setText(R.id.tv_casts, item.casts.mapConserve(p => p.name).mkString("/"))
+      .setText(R.id.tv_director, item.directors.mapConserve(p => p.name.getOrElse("")).mkString("/"))
+      .setText(R.id.tv_casts, item.casts.mapConserve(p => p.name.getOrElse("")).mkString("/"))
       .setText(R.id.tv_genres, item.genres.mkString("/"))
+    val url = item.images.getOrElse(Avatars("", "", "")).large
 
     Glide.`with`(helper.itemView.getContext)
-      .load(item.images.large)
+      .load(url)
       .placeholder(R.drawable.img_default_movie)
       .error(R.drawable.img_default_movie)
       .crossFade()
@@ -48,5 +52,15 @@ class MovieAdapter(@LayoutRes layoutResId: Int, data: java.util.List[Subject]) e
       }
     })
   }
+
+
+  def clear(): Unit = {
+    if (mData != null) {
+      mData.clear()
+      notifyDataSetChanged()
+
+    }
+  }
+
 
 }

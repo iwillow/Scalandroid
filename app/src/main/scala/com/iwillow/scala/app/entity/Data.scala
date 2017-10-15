@@ -22,7 +22,7 @@ object Data {
   /**
     * 人
     */
-  case class Person(alt: String, avatars: Avatars, name: String, id: String) extends java.io.Serializable
+  case class Person(alt: Option[String], avatars: Option[Avatars], name: Option[String], id: Option[String]) extends java.io.Serializable
 
   /**
     * 电影主题
@@ -37,7 +37,7 @@ object Data {
                       subtype: String,
                       directors: List[Person],
                       year: String,
-                      images: Avatars,
+                      images: Option[Avatars],
                       alt: String,
                       id: String
                     ) extends java.io.Serializable
