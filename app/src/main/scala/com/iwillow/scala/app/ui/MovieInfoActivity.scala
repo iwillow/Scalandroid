@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.{Build, Bundle}
 import android.support.annotation.{IdRes, NonNull}
+import android.support.design.widget.CollapsingToolbarLayout
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.{ActionBar, AppCompatActivity}
 import android.support.v7.widget.{LinearLayoutManager, RecyclerView, Toolbar}
@@ -18,7 +19,7 @@ import com.bumptech.glide.Glide
 import com.iwillow.scala.app.Api.DoubanParser
 import com.iwillow.scala.app.adapter.StarAdapter
 import com.iwillow.scala.app.{Api, R}
-import com.iwillow.scala.app.entity.Data.{Person, Star, Subject}
+import com.iwillow.scala.app.entity.Data.{Avatars, Person, Star, Subject}
 import com.iwillow.scala.app.util.{LogExt, RxHttp}
 import jp.wasabeef.glide.transformations.BlurTransformation
 import rx.lang.scala.subscriptions.CompositeSubscription
@@ -45,7 +46,7 @@ class MovieInfoActivity extends AppCompatActivity {
 
   private var mStarRecyclerView: RecyclerView = _
 
-  private var mStarAdapter:StarAdapter=_
+  private var mStarAdapter: StarAdapter = _
 
   private val subscriptions = CompositeSubscription()
 
@@ -67,10 +68,6 @@ class MovieInfoActivity extends AppCompatActivity {
 
   private[this] def initView(): Unit = {
     val toolBar: Toolbar = findViewById(R.id.toolbar).asInstanceOf[Toolbar]
-    toolBar.setTitle(item.title)
-    toolBar.setNavigationOnClickListener(new OnClickListener {
-      override def onClick(v: View): Unit = finish()
-    })
     setSupportActionBar(toolBar)
     val actionBar: ActionBar = getSupportActionBar
     if (actionBar != null) {
@@ -78,16 +75,25 @@ class MovieInfoActivity extends AppCompatActivity {
       actionBar.setDisplayShowTitleEnabled(false)
       actionBar.setDisplayHomeAsUpEnabled(true)
     }
+    toolBar.setTitle(item.title)
+    toolBar.setNavigationOnClickListener(new OnClickListener {
+      override def onClick(v: View): Unit = onBackPressed()
+    })
 
     mStarRecyclerView = findViewById(R.id.rv_star).asInstanceOf[RecyclerView]
     mStarRecyclerView.setLayoutManager(new LinearLayoutManager(this))
+    mStarRecyclerView.setNestedScrollingEnabled(false)
     mStarAdapter = new StarAdapter(R.layout.item_star, new util.ArrayList[Star]())
     mStarRecyclerView.setAdapter(mStarAdapter)
-    item.directors.foreach(item=>mStarAdapter.addData(Star("导演",item)) )
+    item.directors.foreach(item => mStarAdapter.addData(Star("导演", item)))
+
+
 
     val imageView: ImageView = findViewById(R.id.iv_cover).asInstanceOf[ImageView]
+
+    val url = item.images.getOrElse(Avatars("", "", "")).large
     Glide.`with`(this)
-      .load(item.images.large)
+      .load(url)
       .placeholder(R.drawable.img_default_movie)
       .error(R.drawable.img_default_movie)
       .crossFade()
@@ -96,16 +102,15 @@ class MovieInfoActivity extends AppCompatActivity {
 
     val bgImageView: ImageView = findViewById(R.id.iv_background).asInstanceOf[ImageView]
     Glide.`with`(this)
-      .load(item.images.large)
+      .load(url)
       .crossFade()
       .bitmapTransform(new BlurTransformation(this, 30, 3))
       .into(bgImageView)
 
-    setText(R.id.toolbar_title, item.title)
     setText(R.id.tv_title, item.title)
     setText(R.id.tv_rate, item.rating.average.toString)
-    setText(R.id.tv_director, item.directors.mapConserve(p => p.name).mkString("/"))
-    setText(R.id.tv_casts, item.casts.mapConserve(p => p.name).mkString("/"))
+    setText(R.id.tv_director, item.directors.mapConserve(p => p.name.getOrElse("")).mkString("/"))
+    setText(R.id.tv_casts, item.casts.mapConserve(p => p.name.getOrElse("")).mkString("/"))
     setText(R.id.tv_genres, item.genres.mkString("/"))
     setText(R.id.tv_year, item.year)
     loadDetailMsg(item)
@@ -128,7 +133,7 @@ class MovieInfoActivity extends AppCompatActivity {
         movie => {
           setText(R.id.tv_aka, movie.aka.mkString("/"))
           setText(R.id.tv_summary, movie.summary)
-          movie.casts.foreach(item=>mStarAdapter.addData(Star("演员",item)) )
+          movie.casts.foreach(item => mStarAdapter.addData(Star("演员", item)))
         },
         e => {
           LogExt.e(TAG, "loadDetailMsg", e)
