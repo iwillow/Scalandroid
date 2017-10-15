@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="100dp"
+    android:background="@drawable/item_click"
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/iv_avatar"
@@ -10,7 +12,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:src="@drawable/img_default_movie"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_default_movie" />
 
     <LinearLayout
         android:layout_width="match_parent"
