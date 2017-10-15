@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+            android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -62,6 +62,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="1dp"
                     android:layout_toRightOf="@id/iv_cover"
+                    android:clipChildren="false"
                     android:orientation="vertical">
 
                     <TextView
@@ -72,12 +73,12 @@
                         android:maxLines="2"
                         android:textColor="@android:color/white"
                         android:textSize="17sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -132,8 +133,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="2"
                             android:textColor="@android:color/white" />
                     </LinearLayout>
 
@@ -155,8 +154,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="1"
                             android:textColor="@android:color/white" />
                     </LinearLayout>
 
@@ -200,7 +197,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text=""
                             android:textColor="@android:color/white" />
                     </LinearLayout>
 
@@ -220,15 +216,6 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
             </android.support.v7.widget.Toolbar>
-
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="center|top"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                app:layout_collapseMode="pin" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
