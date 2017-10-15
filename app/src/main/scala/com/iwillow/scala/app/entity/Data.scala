@@ -48,6 +48,9 @@ object Data {
   case class Top250(count: Int, start: Int, total: Int, subjects: List[Subject], title: String) extends java.io.Serializable
 
 
+  case class Star(role: String, person: Person) extends java.io.Serializable
+
+
   object ResultJsonProtocol extends DefaultJsonProtocol {
     implicit val ratingFormat = jsonFormat(Rating, "max", "average", "stars", "min")
     implicit val avatarsFormat = jsonFormat(Avatars, "small", "large", "medium")
