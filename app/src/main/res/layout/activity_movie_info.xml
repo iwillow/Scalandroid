@@ -225,6 +225,7 @@
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorItemClick"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -299,7 +300,7 @@
                 android:id="@+id/rv_star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_marginTop="10dp">
 
             </android.support.v7.widget.RecyclerView>
 
