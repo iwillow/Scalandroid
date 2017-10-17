@@ -1,5 +1,6 @@
 # Scalandroid
-Android app demo written in scala,Using [RxScala](https://github.com/ReactiveX/RxScala),[RxAndroid](https://github.com/ReactiveX/RxAndroid),[OkHttp3](https://github.com/square/okhttp) etc.
+This experimental app is aimed at developing android app with pure [scala](http://www.scala-lang.org/) . Show the top 250 movies in the world from [Douban Api](https://developers.douban.com/wiki/?title=api_v2)
+Using [RxScala](https://github.com/ReactiveX/RxScala),[RxAndroid](https://github.com/ReactiveX/RxAndroid),[OkHttp3](https://github.com/square/okhttp) etc.
 
 ## screenshots
 
